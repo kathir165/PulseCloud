@@ -31,6 +31,9 @@ PulseCloud brings website health checks and monitoring history into one dashboar
 - **URL safety checks**: Restrict protocols and ports and block private or reserved network addresses.
 - **Flexible storage**: Use local file storage for development or Upstash Redis for hosted environments.
 - **Interactive visuals**: Explore a dashboard built with charts, motion, and Three.js-powered scenes.
+- **Error detection:** Identify failed website checks and HTTP errors to help spot availability problems.
+- **Incident verification:** Retry eligible failed checks to help distinguish temporary failures from persistent issues.
+- **Simple troubleshooting assistance:** Provide users with clear, actionable guidance to investigate common website availability and response-time problems.
 
 ## Development Status
 

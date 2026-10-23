@@ -31,22 +31,17 @@ PulseCloud brings website health checks and monitoring history into one dashboar
 - **URL safety checks**: Restrict protocols and ports and block private or reserved network addresses.
 - **Flexible storage**: Use local file storage for development or Upstash Redis for hosted environments.
 - **Interactive visuals**: Explore a dashboard built with charts, motion, and Three.js-powered scenes.
-## Overview
-...
-
-## Features
-- Availability monitoring
-- Response-time tracking
-- ...
 
 ## Development Status
-[Paste the new Development Status section here]
 
-## Tech Stack
-...
+PulseCloud is currently being developed for DEXATHON at Sathyabama Institute of Science and Technology.
 
-## Getting Started
-...
+- **Current focus:** Website health monitoring, response-time tracking, and dashboard improvements.
+- **Reliability:** Verifying failed checks and improving incident detection.
+- **Next milestone:** Final testing and hackathon demonstration.
+
+Features and implementation details may change as development progresses.
+
 ## Tech Stack
 
 ### Frontend

@@ -21,6 +21,14 @@ A website monitoring dashboard built to track availability, response times, and 
 
 PulseCloud brings website health checks and monitoring history into one dashboard. Add a public website, run a check, inspect its response time and status, and review recorded results over time.
 
+## Problem Statement
+
+Website downtime, slow responses, and recurring HTTP errors can disrupt users and go unnoticed without continuous monitoring. Manually checking websites makes it difficult to track performance over time, identify recurring failures, and understand what needs attention.
+
+## Proposed Solution
+
+PulseCloud is a website monitoring and troubleshooting platform being developed for DEXATHON at Sathyabama Institute of Science and Technology. It brings website availability checks, response-time tracking, error detection, incident verification, and troubleshooting assistance into one dashboard, helping users investigate potential problems more efficiently.
+
 ## Features
 
 - **Availability monitoring**: Check public HTTP and HTTPS endpoints.

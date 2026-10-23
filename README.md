@@ -140,9 +140,9 @@ PulseCloud's URL checker restricts accepted protocols and ports, blocks private 
 
 Keep environment files, local monitoring data, dependencies, and build output out of version control.
 
-## Project Status
+## ## Project Status
 
-PulseCloud is an actively developed portfolio project. Features and deployment requirements may change as development continues.
+PulseCloud is currently under active development for DEXATHON at Sathyabama Institute of Science and Technology. Features and implementation may evolve as the project progresses toward the hackathon.
 
 ---
 

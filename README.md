@@ -53,6 +53,37 @@ PulseCloud is currently being developed for DEXATHON at Sathyabama Institute of 
 
 Features and implementation details may change as development progresses.
 
+## System Architecture
+
+The diagram below illustrates the intended PulseCloud workflow, from monitoring a website to presenting results and troubleshooting guidance.
+
+```mermaid
+flowchart TD
+    A["Monitored Website"] --> B["HTTP / HTTPS Check"]
+    C["Scheduled Trigger"] --> D["PulseCloud Monitoring API"]
+    D --> B
+    B --> E["Response Analysis"]
+    E --> F["Status & Latency Results"]
+    E --> G["Failure Verification"]
+    G --> H["Incident Detection"]
+    F --> I["Monitoring Dashboard"]
+    H --> I
+    I --> J["History & Visualizations"]
+    I --> K["Troubleshooting Guidance"]
+    L[("Local Storage / Upstash Redis")] <--> D
+    D --> F
+    H --> L
+
+    classDef external fill:#172554,stroke:#60A5FA,color:#DBEAFE
+    classDef process fill:#172033,stroke:#64748B,color:#F1F5F9
+    classDef output fill:#12352B,stroke:#34D399,color:#D1FAE5
+    class A,C external
+    class B,D,E,G,H,L process
+    class F,I,J,K output
+```
+
+*Note: This is a conceptual workflow. Actual connections and feature availability may differ from the diagram while development continues.*
+
 ## Tech Stack
 
 ### Frontend

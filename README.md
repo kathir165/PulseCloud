@@ -34,18 +34,37 @@ PulseCloud brings website health checks and monitoring history into one dashboar
 
 ## Tech Stack
 
-| Technology | Purpose |
-|---|---|
-| Next.js | Application framework |
-| React | Frontend library |
-| TypeScript | Type-safe application code |
-| Node.js | JavaScript runtime for server-side functionality |
-| Three.js + React Three Fiber | 3D visualizations |
-| Drei | 3D components and helpers |
-| Recharts | Charts and monitoring data |
-| Motion | UI animation |
-| Upstash Redis | Optional hosted storage |
+### Frontend
 
+<p>
+  <img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white" alt="Next.js" />
+  <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React" />
+  <img src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/Tailwind_CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="Tailwind CSS" />
+</p>
+
+### Backend and Runtime
+
+<p>
+  <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="Node.js" />
+  <img src="https://img.shields.io/badge/Next.js_API_Routes-000000?style=for-the-badge&logo=nextdotjs&logoColor=white" alt="Next.js API routes" />
+</p>
+
+### 3D, Animation and Charts
+
+<p>
+  <img src="https://img.shields.io/badge/Three.js-000000?style=for-the-badge&logo=threedotjs&logoColor=white" alt="Three.js" />
+  <img src="https://img.shields.io/badge/React_Three_Fiber-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" alt="React Three Fiber" />
+  <img src="https://img.shields.io/badge/Drei-7C3AED?style=for-the-badge&logo=threedotjs&logoColor=white" alt="Drei" />
+  <img src="https://img.shields.io/badge/Recharts-22B5BF?style=for-the-badge&logo=chartdotjs&logoColor=white" alt="Recharts" />
+  <img src="https://img.shields.io/badge/Motion-FFFFFF?style=for-the-badge&logo=framer&logoColor=0055FF" alt="Motion" />
+</p>
+
+### Storage
+
+<p>
+  <img src="https://img.shields.io/badge/Upstash_Redis-00C7B7?style=for-the-badge&logo=redis&logoColor=white" alt="Upstash Redis" />
+</p>
 ## Getting Started
 
 ### Requirements

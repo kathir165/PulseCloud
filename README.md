@@ -62,8 +62,10 @@ PulseCloud brings website health checks and monitoring history into one dashboar
 
 ### Storage
 
-<p>
-  <img src="https://img.shields.io/badge/Upstash_Redis-00C7B7?style=for-the-badge&logo=redis&logoColor=white" alt="Upstash Redis" />
+<p align="left">
+  <a href="https://upstash.com/">
+    <img src="https://img.shields.io/badge/Upstash_Redis-00C7B7?style=flat-square&logo=upstash&logoColor=white" alt="Upstash Redis" />
+  </a>
 </p>
 ## Getting Started
 

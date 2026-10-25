@@ -24,8 +24,9 @@ function Spark({ values }: { values: number[] }) {
 }
 
 export default function SiteMonitor() {
-  const { sites, busy, error, check, remove } = useSites();
+  const { sites, busy, error, check, remove, needsPasscode, setPasscode } = useSites();
   const [confirming, setConfirming] = useState<string | null>(null);
+  const [pass, setPass] = useState("");
   const [url, setUrl] = useState("");
   const full = sites.length >= MAX_SITES;
 
@@ -66,6 +67,29 @@ export default function SiteMonitor() {
       </form>
 
       {error && <p className="px-5 pb-3 text-sm text-red-400">{error}</p>}
+            {needsPasscode && (
+        <div className="flex flex-col gap-3 px-5 pb-4 sm:flex-row">
+          <input
+            type="password"
+            value={pass}
+            onChange={(e) => setPass(e.target.value)}
+            placeholder="Passcode"
+            aria-label="Passcode"
+            className="w-full rounded-lg border border-line bg-navy-900 px-4 py-2.5 text-sm text-fg outline-none placeholder:text-muted focus:border-accent"
+          />
+          <button
+            type="button"
+            onClick={() => {
+              setPasscode(pass);
+              setPass("");
+            }}
+            disabled={!pass}
+            className="shrink-0 rounded-lg border border-accent px-5 py-2.5 text-sm font-medium text-accent transition hover:bg-accent/10 disabled:opacity-50"
+          >
+            Unlock
+          </button>
+        </div>
+      )}
 
       {sites.length === 0 ? (
         <p className="border-t border-line px-5 py-6 text-sm text-muted">

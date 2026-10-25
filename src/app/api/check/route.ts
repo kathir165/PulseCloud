@@ -1,12 +1,14 @@
 import { NextResponse } from "next/server";
 import { verifiedCheck } from "@/lib/verify";
 import { addCheck, getState, removeSite } from "@/lib/store";
+import { requirePasscode } from "@/lib/auth";
 
 const hits = new Map<string, number[]>();
 const LIMIT = 40;
 const WINDOW_MS = 60_000;
 
 function limited(ip: string) {
+  if (hits.size > 1000) hits.clear();
   const now = Date.now();
   const recent = (hits.get(ip) ?? []).filter((t) => now - t < WINDOW_MS);
   recent.push(now);
@@ -31,6 +33,8 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   if (!sameOrigin(req)) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  const denied = requirePasscode(req);
+  if (denied) return denied;
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0].trim() ?? "local";
   if (limited(ip)) {
     return NextResponse.json({ error: "Too many checks. Try again in a minute." }, { status: 429 });
@@ -55,8 +59,11 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: (e as Error).message }, { status: 400 });
   }
 }
+
 export async function DELETE(req: Request) {
   if (!sameOrigin(req)) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+  const denied = requirePasscode(req);
+  if (denied) return denied;
   const text = await req.text();
   if (text.length > 2000) return NextResponse.json({ error: "Request too large" }, { status: 413 });
 

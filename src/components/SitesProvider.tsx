@@ -28,12 +28,26 @@ type Ctx = {
   loaded: boolean;
   busy: string | null;
   error: string | null;
+  needsPasscode: boolean;
+  setPasscode: (passcode: string) => void;
   check: (url: string, key: string) => Promise<boolean>;
   remove: (url: string) => Promise<boolean>;
   checkAll: () => Promise<void>;
 };
 
 const SitesContext = createContext<Ctx | null>(null);
+
+const PASS_KEY = "pulsecloud.passcode";
+const NEED_PASSCODE = "Enter the passcode to make changes.";
+
+function authHeaders(): Record<string, string> {
+  try {
+    const p = sessionStorage.getItem(PASS_KEY);
+    return p ? { "x-passcode": p } : {};
+  } catch {
+    return {};
+  }
+}
 
 async function fetchState(): Promise<{ sites: Site[]; lastCron: LastCron | null }> {
   const r = await fetch("/api/check");
@@ -47,6 +61,7 @@ export function SitesProvider({ children }: { children: ReactNode }) {
   const [loaded, setLoaded] = useState(false);
   const [busy, setBusy] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [needsPasscode, setNeedsPasscode] = useState(false);
 
   const refresh = useCallback(async () => {
     const d = await fetchState();
@@ -72,6 +87,16 @@ export function SitesProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
+  const setPasscode = useCallback((passcode: string) => {
+    try {
+      sessionStorage.setItem(PASS_KEY, passcode);
+    } catch {
+      /* storage unavailable */
+    }
+    setNeedsPasscode(false);
+    setError(null);
+  }, []);
+
   const check = useCallback(
     async (target: string, key: string) => {
       setBusy(key);
@@ -79,10 +104,14 @@ export function SitesProvider({ children }: { children: ReactNode }) {
       try {
         const r = await fetch("/api/check", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "application/json", ...authHeaders() },
           body: JSON.stringify({ url: target }),
         });
         const d = (await r.json()) as { error?: string };
+        if (r.status === 401) {
+          setNeedsPasscode(true);
+          throw new Error(NEED_PASSCODE);
+        }
         if (!r.ok) throw new Error(d.error ?? "Check failed");
         await refresh();
         return true;
@@ -103,13 +132,15 @@ export function SitesProvider({ children }: { children: ReactNode }) {
       try {
         const r = await fetch("/api/check", {
           method: "DELETE",
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "application/json", ...authHeaders() },
           body: JSON.stringify({ url: target }),
         });
-        if (!r.ok) {
-          const d = (await r.json()) as { error?: string };
-          throw new Error(d.error ?? "Could not remove");
+        const d = (await r.json()) as { error?: string };
+        if (r.status === 401) {
+          setNeedsPasscode(true);
+          throw new Error(NEED_PASSCODE);
         }
+        if (!r.ok) throw new Error(d.error ?? "Could not remove");
         await refresh();
         return true;
       } catch (e) {
@@ -125,19 +156,24 @@ export function SitesProvider({ children }: { children: ReactNode }) {
   const checkAll = useCallback(async () => {
     setBusy("all");
     setError(null);
-    const state = { error: null as string | null };
+    const state = { error: null as string | null, locked: false };
     const queue = [...sites];
     const worker = async () => {
       for (let s = queue.shift(); s; s = queue.shift()) {
         try {
           const r = await fetch("/api/check", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "application/json", ...authHeaders() },
             body: JSON.stringify({ url: s.url }),
           });
           if (!r.ok) {
             const d = (await r.json()) as { error?: string };
-            state.error = d.error ?? "Check failed";
+            if (r.status === 401) {
+              state.locked = true;
+              state.error = NEED_PASSCODE;
+            } else {
+              state.error = d.error ?? "Check failed";
+            }
             queue.length = 0;
             return;
           }
@@ -149,6 +185,7 @@ export function SitesProvider({ children }: { children: ReactNode }) {
       }
     };
     await Promise.all([worker(), worker(), worker(), worker()]);
+    if (state.locked) setNeedsPasscode(true);
     if (state.error) setError(state.error);
     try {
       await refresh();
@@ -159,8 +196,8 @@ export function SitesProvider({ children }: { children: ReactNode }) {
   }, [sites, refresh]);
 
   const value = useMemo(
-    () => ({ sites, lastCron, loaded, busy, error, check, remove, checkAll }),
-    [sites, lastCron, loaded, busy, error, check, remove, checkAll],
+    () => ({ sites, lastCron, loaded, busy, error, needsPasscode, setPasscode, check, remove, checkAll }),
+    [sites, lastCron, loaded, busy, error, needsPasscode, setPasscode, check, remove, checkAll],
   );
   return <SitesContext.Provider value={value}>{children}</SitesContext.Provider>;
 }

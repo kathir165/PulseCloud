@@ -86,6 +86,17 @@ export function SitesProvider({ children }: { children: ReactNode }) {
       alive = false;
     };
   }, []);
+    useEffect(() => {
+    const tick = () => {
+      if (document.visibilityState === "visible") refresh().catch(() => {});
+    };
+    const id = setInterval(tick, 60_000);
+    document.addEventListener("visibilitychange", tick);
+    return () => {
+      clearInterval(id);
+      document.removeEventListener("visibilitychange", tick);
+    };
+  }, [refresh]);
 
   const setPasscode = useCallback((passcode: string) => {
     try {
